@@ -9,10 +9,18 @@ export const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-mo
 export function initSmoothScroll() {
   if (prefersReducedMotion()) return null;
   const lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.9 });
+  const updateLenis = (time) => lenis.raf(time * 1000);
+
   lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.add(updateLenis);
   gsap.ticker.lagSmoothing(0);
-  return lenis;
+
+  return {
+    destroy() {
+      gsap.ticker.remove(updateLenis);
+      lenis.destroy();
+    },
+  };
 }
 
 export function scopedAnimation(scopeRef, setup) {

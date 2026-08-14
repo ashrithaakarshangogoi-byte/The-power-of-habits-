@@ -12,5 +12,6 @@
     "lenis": "latest",
     "lucide-react": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "type": "module"
 }
